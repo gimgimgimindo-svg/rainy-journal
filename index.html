@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rainy Day Journal</title>
+<meta name="description" content="Catatan outfit di hari hujan.">
+<meta name="theme-color" content="#8fd0e0">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0d3b4a;--ink-soft:#2c6272;--glass:rgba(240,252,255,.55);--glass-hi:rgba(244,254,255,.78);--glass-line:rgba(255,255,255,.7);--accent:#ff9a5c;--bg:#8fd0e0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#e8fbff;--ink-soft:#b5dce6;--glass:rgba(8,38,50,.5);--glass-hi:rgba(8,38,50,.78);--glass-line:rgba(190,240,255,.3);--bg:#0b3342}}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;overflow:hidden;background:var(--bg);overscroll-behavior:none}
+body{font-family:"Jost","Helvetica Neue",Helvetica,Arial,sans-serif;font-weight:300;color:var(--ink);-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}
+.app{position:relative;height:100%;width:100%;max-width:480px;margin:0 auto;overflow:hidden}
+svg.scene,.bgvid{position:absolute;inset:0;width:100%;height:100%}
+.bgvid{object-fit:cover;pointer-events:none}
+.scrim{position:absolute;inset:0;pointer-events:none;background:linear-gradient(rgba(0,50,70,.4),rgba(0,50,70,0) 22%,rgba(0,50,70,0) 45%,rgba(0,40,60,.35))}
+header{position:absolute;top:14px;left:18px;right:18px;display:flex;justify-content:space-between;align-items:center;color:#fff;z-index:2}
+.logo{font-weight:400;letter-spacing:.14em;font-size:12px;text-transform:uppercase;text-shadow:0 1px 8px rgba(0,60,80,.5)}
+.snd{font:inherit;font-size:12px;font-weight:300;letter-spacing:.1em;color:#fff;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.2);padding:7px 13px;border-radius:99px;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);cursor:pointer}
+.snd.off{opacity:.8;text-decoration:line-through}
+.list{position:absolute;top:50%;transform:translateY(-50%);left:18px;right:60px;display:flex;flex-direction:column;align-items:flex-start;gap:1px;z-index:3}
+.item{font:inherit;font-size:12px;font-weight:300;letter-spacing:.14em;text-transform:uppercase;line-height:1.35;color:#fff;text-shadow:0 1px 8px rgba(0,60,80,.6);background:none;border:0;padding:8px 0;text-align:left;cursor:pointer;animation:rise .6s both;transition:opacity .2s,transform .2s}
+.item:hover{transform:translateX(3px)}.item:active{opacity:.6;transform:translateX(4px)}
+.item:focus-visible{outline:1px solid #fff;outline-offset:3px}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}}
+.ov{position:absolute;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(0,40,55,.28);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .3s}
+.ov.show{opacity:1;pointer-events:auto}
+.panel{position:relative;width:100%;max-height:calc(100vh - 44px);max-height:calc(100dvh - 44px);overflow-y:auto;overscroll-behavior:contain;padding:26px 22px 22px;border-radius:30px;background:var(--glass-hi);border:1px solid var(--glass-line);backdrop-filter:blur(26px) saturate(1.4);-webkit-backdrop-filter:blur(26px) saturate(1.4);box-shadow:0 24px 60px rgba(0,50,70,.38);transform:translateY(26px) scale(.92);opacity:0;transition:transform .4s cubic-bezier(.2,1.2,.3,1),opacity .3s}
+.ov.show .panel{transform:none;opacity:1}
+.meta{display:flex;gap:8px;align-items:center;font-size:11.5px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+h2{font-weight:300;font-size:26px;line-height:1.2;letter-spacing:.01em;margin:10px 0 8px}
+p{font-size:15px;font-weight:300;line-height:1.65;color:var(--ink-soft)}
+.tags{display:flex;gap:6px;margin-top:14px;flex-wrap:wrap}
+.tags span{font-size:11.5px;font-weight:400;padding:4px 10px;border-radius:99px;background:rgba(255,255,255,.35);border:1px solid var(--glass-line)}
+.x{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:1px solid var(--glass-line);background:rgba(255,255,255,.4);color:var(--ink);font:inherit;font-size:18px;cursor:pointer}
+.x:focus-visible{outline:2px solid var(--accent)}
+.ripple{position:absolute;width:12px;height:12px;border-radius:50%;border:1.5px solid rgba(255,255,255,.85);pointer-events:none;z-index:9;transform:translate(-50%,-50%);animation:rp .9s ease-out forwards}
+@keyframes rp{to{width:90px;height:90px;opacity:0}}
+@media (max-height:640px){.item{padding:7px 0;font-size:11px}.list{gap:0}}
+@media (prefers-reduced-motion:reduce){.item,.panel,.ripple{animation:none;transition:none}}
+input,textarea{-webkit-user-select:text;user-select:text}
+.snd{width:36px;height:36px;padding:0;display:inline-flex;align-items:center;justify-content:center}
+.snd svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.snd.off{text-decoration:none;opacity:.8}
+.sl{display:none}.snd.off .sl{display:block}
+.adm{position:absolute;right:18px;bottom:calc(18px);z-index:4;display:none}
+.adm-panel{max-height:90%;overflow-y:auto}
+.arow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--glass-line);font-size:14px}
+.arow span{flex:1}.arow button,.add{font:inherit;font-weight:400;font-size:12px;letter-spacing:.08em;border:1px solid var(--glass-line);background:rgba(255,255,255,.4);color:var(--ink);border-radius:99px;padding:6px 12px;cursor:pointer}
+.alist{margin:10px 0 14px}
+.frm{display:grid;gap:8px}.row{display:grid;grid-template-columns:1fr 80px;gap:8px}
+.frm input,.frm textarea{font:inherit;font-size:16px;font-weight:300;color:var(--ink);width:100%;padding:10px 12px;border-radius:14px;border:1px solid var(--glass-line);background:rgba(255,255,255,.35);resize:none}
+.frm ::placeholder{color:var(--ink-soft);opacity:.8}
+.add{background:var(--accent);color:#3a1600;border-color:transparent;padding:11px;font-size:13px}
+.msg{font-size:13px;min-height:16px;color:var(--ink-soft)}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <svg class="scene" viewBox="0 0 360 640" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7fc3ea"/><stop offset=".6" stop-color="#cdeefa"/><stop offset="1" stop-color="#e4f8f4"/></linearGradient>
+      <linearGradient id="wet" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9ee0e6"/><stop offset=".45" stop-color="#3f9fb4"/><stop offset="1" stop-color="#0f5f78"/></linearGradient>
+      <linearGradient id="rail" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cdeff5"/><stop offset="1" stop-color="#2f7f98"/></linearGradient>
+      <filter id="b8"><feGaussianBlur stdDeviation="8"/></filter>
+      <filter id="b3"><feGaussianBlur stdDeviation="3"/></filter>
+      <filter id="b1"><feGaussianBlur stdDeviation="1.2"/></filter>
+    </defs>
+    <rect width="360" height="640" fill="url(#sky)"/>
+    <g class="sway" filter="url(#b8)">
+      <circle cx="30" cy="190" r="70" fill="#4aa96c"/><circle cx="110" cy="230" r="60" fill="#2f9a6a"/>
+      <circle cx="260" cy="210" r="75" fill="#58b774"/><circle cx="330" cy="150" r="55" fill="#8fd18a"/>
+      <circle cx="60" cy="110" r="38" fill="#eaf8ee"/><circle cx="150" cy="150" r="30" fill="#f4fbf0"/>
+      <circle cx="300" cy="90" r="28" fill="#fff"/><circle cx="20" cy="40" r="40" fill="#bfe8c8"/>
+      <circle cx="205" cy="255" r="45" fill="#7ccc95"/>
+    </g>
+    <g filter="url(#b1)">
+      <rect x="31" y="0" width="7" height="330" fill="#1b3a52"/><rect x="38" y="0" width="3" height="330" fill="#f2b84b"/>
+      <rect x="118" y="60" width="3" height="270" fill="#6aa7d3"/>
+      <rect x="258" y="90" width="12" height="240" fill="#2f7fd0"/>
+      <rect x="156" y="52" width="86" height="24" rx="12" fill="#5c9bd6"/>
+      <circle cx="174" cy="64" r="7" fill="#2a6b66"/><circle cx="196" cy="64" r="7" fill="#2f8f72"/><circle cx="222" cy="64" r="8" fill="#ffa24d"/>
+      <rect x="215" y="76" width="7" height="254" fill="#8ab9de"/>
+      <rect x="52" y="125" width="32" height="50" rx="10" fill="#9fe2ee"/><circle cx="68" cy="140" r="6" fill="#ff8f8f" opacity=".7"/>
+      <rect x="232" y="200" width="3" height="125" fill="#a9c7d4"/><rect x="240" y="200" width="3" height="125" fill="#a9c7d4"/><rect x="248" y="200" width="3" height="125" fill="#a9c7d4"/>
+    </g>
+    <rect y="326" width="360" height="314" fill="url(#wet)"/>
+    <rect y="326" width="360" height="6" fill="#d8f6fa" opacity=".8"/>
+    <g class="glint" filter="url(#b3)" opacity=".7">
+      <ellipse cx="75" cy="430" rx="50" ry="22" fill="#e8fbff"/><ellipse cx="255" cy="420" rx="30" ry="60" fill="#3a8be0" opacity=".6"/>
+      <ellipse cx="205" cy="575" rx="26" ry="16" fill="#ffa24d"/><ellipse cx="130" cy="380" rx="28" ry="40" fill="#a6f0d0"/>
+    </g>
+    <g fill="url(#rail)" stroke="#e4fbff" stroke-opacity=".45" stroke-width="1.2" filter="url(#b1)">
+      <path d="M176 334 L184 334 L150 640 L30 640 Z" opacity=".95"/>
+      <path d="M186 334 L190 334 L230 640 L160 640 Z" opacity=".9"/>
+      <path d="M192 334 L198 334 L340 640 L250 640 Z" opacity=".95"/>
+    </g>
+    <g stroke="#fff" stroke-opacity=".4" stroke-width="1" fill="none" filter="url(#b1)">
+      <path d="M0 360 Q180 345 360 360"/><path d="M0 410 Q180 392 360 410"/><path d="M0 480 Q180 460 360 480"/>
+    </g>
+  </svg>
+  <video class="bgvid" autoplay muted loop playsinline preload="auto" aria-hidden="true" src="rain.mp4"></video>
+  <div class="scrim"></div>
+  <header><span class="logo">Rainy Day Journal</span><button class="snd off" id="snd" aria-pressed="false" aria-label="Suara" title="Suara"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5z"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6"/><path d="M18 6.5a8 8 0 0 1 0 11"/><path class="sl" d="M3.5 3.5l17 17"/></svg></button></header>
+  <nav class="list" id="list" aria-label="Artikel blog"></nav>
+  <button class="snd adm" id="adm" aria-label="Admin" title="Admin"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg></button>
+  <div class="ov" id="ov" aria-hidden="true">
+    <div class="panel" role="dialog" aria-modal="true" id="panel">
+      <button class="x" id="x" aria-label="Tutup">×</button>
+      <div id="body"></div>
+    </div>
+  </div>
+  <div class="ov" id="aov" aria-hidden="true">
+    <div class="panel adm-panel" role="dialog" aria-modal="true" aria-label="Admin catatan">
+      <button class="x" id="ax" aria-label="Tutup">×</button>
+      <div class="meta"><span class="dot"></span>Admin · Catatan</div>
+      <div class="alist" id="alist"></div>
+      <div class="frm">
+        <input id="f-title" placeholder="Judul catatan" maxlength="60">
+        <div class="row"><input id="f-cat" placeholder="Kategori" maxlength="16"><input id="f-time" placeholder="Menit" inputmode="numeric" maxlength="2"></div>
+        <textarea id="f-text" rows="3" placeholder="Isi catatan" maxlength="400"></textarea>
+        <input id="f-tags" placeholder="Tag, pisahkan dengan koma" maxlength="60">
+        <input id="f-key" type="password" placeholder="Passcode admin" autocomplete="current-password">
+        <button class="add" id="add">Tambah catatan</button>
+        <div class="msg" id="msg"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const DEFAULTS=[
+ {id:"p1",order:1,cat:"Layering",time:"3 mnt",title:"Trench Coat di Atas Segalanya",text:"Padukan trench beige dengan turtleneck tipis dan celana lurus. Satu lapisan hangat yang langsung bikin tampilan rapi di hari gerimis.",tags:["Trench","Netral","Kantor"]},
+ {id:"p2",order:2,cat:"Warna",time:"2 mnt",title:"Teal, Krem & Sentuhan Oranye",text:"Terinspirasi jalanan basah sore hari: cardigan teal, inner krem, dan satu aksesori oranye hangat sebagai titik fokus.",tags:["Palet","Aksesori","Hujan"]},
+ {id:"p3",order:3,cat:"Santai",time:"4 mnt",title:"Hoodie Oversized, Tetap Rapi",text:"Kunci hoodie longgar ada di bawahnya: jeans slim atau rok midi, lalu sneakers putih bersih supaya siluet seimbang.",tags:["Hoodie","Sneakers","Weekend"]},
+ {id:"p4",order:4,cat:"Detail",time:"2 mnt",title:"Sepatu & Tas Tahan Hujan",text:"Pilih bahan kulit sintetis atau nilon. Boots pendek dan tote anti-air menjaga gayamu tetap kering tanpa terlihat berlebihan.",tags:["Boots","Tote","Praktis"]}
+];
+/* ====== KONFIGURASI: tempel URL Web App Apps Script (berakhiran /exec) ====== */
+const API="https://script.google.com/macros/s/AKfycbxveetMuZ7QBdXyq-a_Ue806xIPhDsO-LJTeXD4-DASEdP_2FSAIHuac-QtEpHbPOmA/exec";
+/* ======================================================================== */
+const hasAPI=/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec$/.test(API);
+let posts=DEFAULTS.slice();
+// Cache hanya dipakai jika backend benar-benar dikonfigurasi; tanpa API tampilkan seed.
+if(hasAPI){try{const c=JSON.parse(localStorage.getItem('rdj-notes')||'null');if(Array.isArray(c))posts=c}catch(e){}}
+const $=id=>document.getElementById(id),app=$('app'),ov=$('ov'),aov=$('aov');
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let last=null;
+function renderList(){const L=$('list');L.innerHTML='';
+  posts.slice(0,8).forEach((p,n)=>{const b=document.createElement('button');b.className='item';b.textContent=p.title;b.style.animationDelay=n*.07+'s';b.onclick=()=>{last=b;open(n)};L.appendChild(b)})}
+renderList();
+function open(n){const p=posts[n];if(!p)return;
+  const tags=Array.isArray(p.tags)?p.tags:[];
+  $('body').innerHTML=`<div class="meta"><span class="dot"></span>${esc(p.cat)} · ${esc(p.time)} baca</div><h2>${esc(p.title)}</h2><p>${esc(p.text)}</p><div class="tags">${tags.map(t=>`<span>#${esc(t)}</span>`).join('')}</div>`;
+  ov.classList.add('show');ov.setAttribute('aria-hidden','false');$('x').focus({preventScroll:true})}
+/* ---- admin ---- */
+const msg=t=>{$('msg').textContent=t};
+function renderAdmin(){const A=$('alist');A.innerHTML='';
+  posts.forEach(p=>{const r=document.createElement('div');r.className='arow';const s=document.createElement('span');s.textContent=p.title;
+    const b=document.createElement('button');b.textContent='Hapus';b.onclick=()=>del(p);r.append(s,b);A.appendChild(r)})}
+const getKey=()=>{
+  let saved='';try{saved=sessionStorage.getItem('rdj-key')||''}catch(e){}
+  return $('f-key').value.trim()||saved;
+};
+function wait(ms){return new Promise(resolve=>setTimeout(resolve,ms))}
+function jsonp(url){
+  return new Promise((resolve,reject)=>{
+    const callback='__rdj_cb_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,10);
+    const script=document.createElement('script');let timer;
+    const cleanup=()=>{
+      clearTimeout(timer);script.onerror=null;
+      if(script.parentNode)script.parentNode.removeChild(script);
+      try{delete window[callback]}catch(e){window[callback]=undefined}
+    };
+    window[callback]=data=>{cleanup();resolve(data)};
+    script.onerror=()=>{cleanup();reject(new Error('Gagal memuat data dari Apps Script'))};
+    script.async=true;
+    script.src=url+(url.includes('?')?'&':'?')+'callback='+encodeURIComponent(callback)+'&_='+Date.now();
+    timer=setTimeout(()=>{cleanup();reject(new Error('Waktu tunggu Apps Script habis'))},12000);
+    document.head.appendChild(script);
+  });
+}
+function newRequestId(){return 'rdj_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,12)}
+function rememberKey(){if($('f-key').value.trim()){try{sessionStorage.setItem('rdj-key',$('f-key').value.trim())}catch(e){}}}
+async function api(payload){
+  // no-cors menghindari pembacaan respons lintas-domain yang tidak konsisten di browser mobile.
+  // Status aksi dikonfirmasi dengan membaca ulang daftar publik melalui JSONP.
+  try{
+    await fetch(API,{method:'POST',mode:'no-cors',redirect:'follow',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload),cache:'no-store'});
+  }catch(e){throw new Error('Tidak dapat mengirim permintaan ke Apps Script. Periksa koneksi lalu muat ulang daftar sebelum mencoba lagi.')}
+}
+async function load(){
+  if(!hasAPI)return false;
+  let lastError;
+  // GET aman diulang sekali; JSONP dapat dibaca dari GitHub Pages tanpa CORS.
+  for(let attempt=0;attempt<2;attempt++){
+    try{
+      const j=await jsonp(API+'?action=list');
+      if(!j||!j.ok)throw new Error((j&&j.error)||'Gagal memuat catatan');
+      if(!Array.isArray(j.notes))throw new Error('Format daftar catatan tidak valid');
+      posts=j.notes;
+      try{localStorage.setItem('rdj-notes',JSON.stringify(posts))}catch(e){}
+      renderList();renderAdmin();return true;
+    }catch(e){lastError=e;if(attempt===0)await wait(2200)}
+  }
+  console.warn('Rainy Day Journal: gagal memuat catatan dari Apps Script.',lastError);
+  return false;
+}
+async function confirmMutation(predicate){
+  for(let attempt=0;attempt<3;attempt++){
+    if(await load()&&predicate(posts))return true;
+    if(attempt<2)await wait(700+attempt*500);
+  }
+  return false;
+}
+const pendingDeletes=new Set();
+async function del(p){
+  if(!hasAPI)return msg('Isi dulu URL Apps Script /exec di index.html');
+  if(pendingDeletes.has(String(p.id)))return;
+  pendingDeletes.add(String(p.id));
+  try{
+    if(!await load())return msg('Daftar belum bisa dimuat. Periksa koneksi sebelum menghapus.');
+    if(posts.length<=1)return msg('Sisakan minimal 1 catatan');
+    if(!posts.some(n=>String(n.id)===String(p.id)))return msg('Catatan sudah berubah; daftar telah diperbarui.');
+    const requestId=newRequestId();
+    await api({action:'delete',key:getKey(),id:p.id,requestId});
+    const confirmed=await confirmMutation(notes=>!notes.some(n=>String(n.id)===String(p.id)));
+    if(confirmed){rememberKey();msg('Dihapus ✓')}
+    else msg('Penghapusan belum terkonfirmasi. Periksa daftar sebelum mencoba lagi.');
+  }catch(e){msg('Gagal: '+e.message)}
+  finally{pendingDeletes.delete(String(p.id))}
+}
+let pendingAdd=null;
+async function add(){
+  if(!hasAPI)return msg('Isi dulu URL Apps Script /exec di index.html');
+  if($('add').disabled)return;
+  const title=$('f-title').value.trim(),text=$('f-text').value.trim();
+  if(!title||!text)return msg('Judul dan isi wajib diisi');
+  $('add').disabled=true;
+  try{
+    if(!await load()){msg('Daftar belum bisa dimuat. Periksa koneksi sebelum menambah catatan.');return}
+    if(posts.length>=8){msg('Maksimal 8 catatan agar tetap muat satu layar');return}
+    const note={title,cat:$('f-cat').value.trim()||'Catatan',time:( $('f-time').value.replace(/\D/g,'')||'2')+' mnt',text,
+      tags:$('f-tags').value.split(',').map(s=>s.trim().replace(/^#/,'')).filter(Boolean).slice(0,4)};
+    const signature=JSON.stringify(note);
+    if(!pendingAdd||pendingAdd.signature!==signature){
+      pendingAdd={signature,id:newRequestId(),beforeIds:posts.map(n=>String(n.id))};
+    }
+    const beforeIds=new Set(pendingAdd.beforeIds);
+    await api({action:'add',key:getKey(),note,requestId:pendingAdd.id});
+    const confirmed=await confirmMutation(notes=>notes.some(n=>!beforeIds.has(String(n.id))&&n.title===note.title&&n.text===note.text));
+    if(confirmed){pendingAdd=null;rememberKey();['f-title','f-cat','f-time','f-text','f-tags'].forEach(i=>$(i).value='');msg('Tersimpan ✓')}
+    else msg('Penambahan belum terkonfirmasi. Periksa daftar sebelum mencoba lagi; permintaan yang sama memakai ID aman agar tidak menggandakan catatan.');
+  }catch(e){msg('Gagal: '+e.message)}
+  finally{$('add').disabled=false}
+}
+function closeAdmin(){aov.classList.remove('show');aov.setAttribute('aria-hidden','true')}
+$('add').onclick=add;$('ax').onclick=closeAdmin;
+$('adm').onclick=()=>{renderAdmin();msg('');aov.classList.add('show');aov.setAttribute('aria-hidden','false')};
+aov.addEventListener('click',e=>{if(e.target===aov)closeAdmin()});
+/* tombol admin hanya muncul jika alamat berakhiran #admin */
+if(location.hash==='#admin'||/[?&]admin\b/.test(location.search))$('adm').style.display='inline-flex';
+load();
+function close(){ov.classList.remove('show');ov.setAttribute('aria-hidden','true');last&&last.focus({preventScroll:true})}
+ov.addEventListener('click',e=>{if(!$('panel').contains(e.target))close()});
+$('x').onclick=close;
+addEventListener('keydown',e=>{if(e.key==='Escape'){close();closeAdmin()}});
+/* ripple + touch tone */
+app.addEventListener('pointerdown',e=>{
+  const r=app.getBoundingClientRect(),d=document.createElement('div');d.className='ripple';
+  d.style.left=e.clientX-r.left+'px';d.style.top=e.clientY-r.top+'px';app.appendChild(d);setTimeout(()=>d.remove(),900);
+  if(on&&!e.target.closest('#snd,#aov'))tone(rnd(SC),.07,2.2)});
+/* ---- audio: soft rain + sparse piano ---- */
+const SC=[261.63,293.66,329.63,392,440,523.25,587.33,659.25,783.99];
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+let ctx,master,pbus,on=false,userOff=false,tm1,tm2,started=false;
+function init(){
+  const AudioContextClass=window.AudioContext||window.webkitAudioContext;
+  if(!AudioContextClass)throw new Error('Browser ini tidak mendukung Web Audio.');
+  ctx=new AudioContextClass();
+  master=ctx.createGain();master.gain.value=0;master.connect(ctx.destination);
+  const dl=ctx.createDelay(1),fb=ctx.createGain(),lp=ctx.createBiquadFilter(),wet=ctx.createGain();
+  dl.delayTime.value=.34;fb.gain.value=.4;lp.type='lowpass';lp.frequency.value=2000;wet.gain.value=.45;
+  dl.connect(lp);lp.connect(fb);fb.connect(dl);lp.connect(wet);wet.connect(master);
+  pbus=ctx.createGain();pbus.gain.value=.55;pbus.connect(master);pbus.connect(dl);
+  const len=ctx.sampleRate*3,buf=ctx.createBuffer(1,len,ctx.sampleRate),ch=buf.getChannelData(0);
+  for(let i=0;i<len;i++)ch[i]=Math.random()*2-1;
+  const mk=(hp,lpf,g)=>{const s=ctx.createBufferSource();s.buffer=buf;s.loop=true;
+    const h=ctx.createBiquadFilter();h.type='highpass';h.frequency.value=hp;
+    const l=ctx.createBiquadFilter();l.type='lowpass';l.frequency.value=lpf;
+    const gg=ctx.createGain();gg.gain.value=g;s.connect(h);h.connect(l);l.connect(gg);gg.connect(master);s.start()};
+  mk(900,6500,.09);mk(120,500,.05);
+  buf2=buf;
+}
+let buf2;
+function drop(){
+  if(!on)return;
+  const s=ctx.createBufferSource();s.buffer=buf2;
+  const f=ctx.createBiquadFilter();f.type='bandpass';f.frequency.value=2500+Math.random()*4500;f.Q.value=6;
+  const g=ctx.createGain(),t=ctx.currentTime;
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.06+Math.random()*.06,t+.004);g.gain.exponentialRampToValueAtTime(.0001,t+.06);
+  s.connect(f);f.connect(g);g.connect(master);s.start(t,Math.random()*2,.08);
+  tm1=setTimeout(drop,70+Math.random()*260);
+}
+function tone(f,v,d){
+  if(!ctx)return;const t=ctx.currentTime;
+  [[1,1,'sine'],[2,.18,'triangle'],[3,.05,'sine']].forEach(([m,a,ty])=>{
+    const o=ctx.createOscillator(),g=ctx.createGain();o.type=ty;o.frequency.value=f*m;o.detune.value=(Math.random()-.5)*6;
+    g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v*a,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+d/m**.4);
+    o.connect(g);g.connect(pbus);o.start(t);o.stop(t+d+.2)});
+}
+function piano(){
+  if(!on)return;
+  const f=rnd(SC);tone(f,.13,3.6);
+  if(Math.random()<.35)setTimeout(()=>on&&tone(rnd(SC)/ (Math.random()<.5?2:1),.09,3.2),380+Math.random()*500);
+  tm2=setTimeout(piano,3500+Math.random()*5000);
+}
+async function start(){
+  if(on)return;
+  try{
+    if(!ctx)init();
+    if(ctx.state==='suspended')await ctx.resume();
+    on=true;started=true;
+    master.gain.cancelScheduledValues(ctx.currentTime);master.gain.linearRampToValueAtTime(.9,ctx.currentTime+2);
+    $('snd').classList.remove('off');$('snd').setAttribute('aria-pressed','true');$('snd').title='Matikan suara';$('snd').setAttribute('aria-label','Matikan suara');
+    clearTimeout(tm1);clearTimeout(tm2);drop();tm2=setTimeout(piano,900);
+  }catch(e){
+    on=false;userOff=true;clearTimeout(tm1);clearTimeout(tm2);
+    $('snd').classList.add('off');$('snd').setAttribute('aria-pressed','false');
+    $('snd').title='Suara tidak tersedia di browser ini';$('snd').setAttribute('aria-label','Suara tidak tersedia');
+    console.warn('Rainy Day Journal: audio tidak dapat dimulai.',e);
+  }
+}
+function stop(){
+  on=false;clearTimeout(tm1);clearTimeout(tm2);
+  if(ctx&&master){master.gain.cancelScheduledValues(ctx.currentTime);master.gain.linearRampToValueAtTime(0,ctx.currentTime+.6)}
+  $('snd').classList.add('off');$('snd').setAttribute('aria-pressed','false');$('snd').title='Nyalakan suara';$('snd').setAttribute('aria-label','Nyalakan suara');
+}
+$('snd').onclick=()=>{if(on){userOff=true;stop()}else{userOff=false;start()}};
+addEventListener('pointerdown',e=>{if(!started&&!userOff&&!e.target.closest('#snd'))start()},{once:false});
+document.addEventListener('visibilitychange',()=>{if(!ctx)return;if(document.hidden){ctx.suspend()}else if(on){ctx.resume()}});
+</script>
+</body>
+</html>
